@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:riverpod/riverpod.dart';
 import 'package:sof_user/features/users_list/data/user_model.dart';
 
 class StackApiServices {
@@ -20,3 +21,9 @@ class StackApiServices {
     }
   }
 }
+
+final apiProvider = Provider<StackApiServices>((ref) => StackApiServices());
+
+final userListProvider = FutureProvider<List<UserModel>>((ref) async {
+  return ref.watch(apiProvider).getUsers();
+});
