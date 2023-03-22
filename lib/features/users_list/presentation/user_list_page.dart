@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sof_user/features/users_list/data/user_model.dart';
+import 'package:sof_user/features/users_list/domain/user_bookmarked_state.dart';
 import 'package:sof_user/features/users_list/domain/user_list_state.dart';
 
 class UserListPage extends ConsumerStatefulWidget {
@@ -44,6 +45,7 @@ class UserListState extends ConsumerState<UserListPage> {
   @override
   Widget build(BuildContext context) {
     final userList = ref.watch(userListNotifierProvider);
+    final bkmList = ref.watch(userBookmarkedNotifierProvider);
 
     return SafeArea(
       child: Scaffold(
@@ -76,8 +78,37 @@ class UserListState extends ConsumerState<UserListPage> {
                           ),
                           title: Text(user.displayName),
                           subtitle: Text(user.location),
-                          trailing:
-                              Text('Reputation: ${user.reputation.toString()}'),
+                          trailing: SizedBox(
+                            width: 140,
+                            child: Row(
+                              children: [
+                                Column(
+                                  children: [
+                                    Text('Reputation'),
+                                    Text(user.reputation.toString())
+                                  ],
+                                ),
+                                const VerticalDivider(
+                                  indent: 8,
+                                  thickness: 1,
+                                ),
+                                bkmList.contains(user)
+                                    ? IconButton(
+                                        icon: const Icon(Icons.bookmark),
+                                        onPressed: () => ref
+                                            .read(userBookmarkedNotifierProvider
+                                                .notifier)
+                                            .removeUser(user))
+                                    : IconButton(
+                                        icon:
+                                            const Icon(Icons.bookmark_outline),
+                                        onPressed: () => ref
+                                            .read(userBookmarkedNotifierProvider
+                                                .notifier)
+                                            .addUser(user))
+                              ],
+                            ),
+                          ),
                         ),
                       );
                     },
