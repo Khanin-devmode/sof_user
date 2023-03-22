@@ -57,69 +57,78 @@ class UserListState extends ConsumerState<UserListPage> {
             ? Column(children: [
                 Expanded(
                   child: ListView.builder(
+                    padding: EdgeInsets.all(6),
                     controller: userListScrollCtrl,
-                    itemCount: userList.length,
+                    itemCount: userList.length + 1,
                     itemBuilder: (context, index) {
-                      UserModel user = userList[index];
-                      return Card(
-                        child: ListTile(
-                          leading: ClipOval(
-                            child: CachedNetworkImage(
-                              width: 48,
-                              height: 48,
-                              fadeInDuration: const Duration(milliseconds: 0),
-                              fadeOutDuration: const Duration(milliseconds: 0),
-                              imageUrl: user.imgUrl,
-                              placeholder: (context, url) => const Icon(
-                                Icons.face,
-                                size: 36,
+                      if (index != userList.length) {
+                        UserModel user = userList[index];
+                        return Card(
+                          child: ListTile(
+                            leading: ClipOval(
+                              child: CachedNetworkImage(
+                                width: 48,
+                                height: 48,
+                                fadeInDuration: const Duration(milliseconds: 0),
+                                fadeOutDuration:
+                                    const Duration(milliseconds: 0),
+                                imageUrl: user.imgUrl,
+                                placeholder: (context, url) => const Icon(
+                                  Icons.face,
+                                  size: 36,
+                                ),
+                              ),
+                            ),
+                            title: Text(user.displayName),
+                            subtitle: Text(user.location),
+                            trailing: SizedBox(
+                              width: 140,
+                              child: Row(
+                                children: [
+                                  Column(
+                                    children: [
+                                      Text('Reputation'),
+                                      Text(user.reputation.toString())
+                                    ],
+                                  ),
+                                  const VerticalDivider(
+                                    indent: 8,
+                                    thickness: 1,
+                                  ),
+                                  bkmList.contains(user)
+                                      ? IconButton(
+                                          icon: const Icon(Icons.bookmark),
+                                          onPressed: () => ref
+                                              .read(
+                                                  userBookmarkedNotifierProvider
+                                                      .notifier)
+                                              .removeUser(user))
+                                      : IconButton(
+                                          icon: const Icon(
+                                              Icons.bookmark_outline),
+                                          onPressed: () => ref
+                                              .read(
+                                                  userBookmarkedNotifierProvider
+                                                      .notifier)
+                                              .addUser(user))
+                                ],
                               ),
                             ),
                           ),
-                          title: Text(user.displayName),
-                          subtitle: Text(user.location),
-                          trailing: SizedBox(
-                            width: 140,
-                            child: Row(
-                              children: [
-                                Column(
-                                  children: [
-                                    Text('Reputation'),
-                                    Text(user.reputation.toString())
-                                  ],
+                        );
+                      } else {
+                        return isLoading
+                            ? const Center(
+                                child: Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: CircularProgressIndicator(),
                                 ),
-                                const VerticalDivider(
-                                  indent: 8,
-                                  thickness: 1,
-                                ),
-                                bkmList.contains(user)
-                                    ? IconButton(
-                                        icon: const Icon(Icons.bookmark),
-                                        onPressed: () => ref
-                                            .read(userBookmarkedNotifierProvider
-                                                .notifier)
-                                            .removeUser(user))
-                                    : IconButton(
-                                        icon:
-                                            const Icon(Icons.bookmark_outline),
-                                        onPressed: () => ref
-                                            .read(userBookmarkedNotifierProvider
-                                                .notifier)
-                                            .addUser(user))
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
+                              )
+                            : const SizedBox();
+                      }
                     },
                   ),
                 ),
-                isLoading
-                    ? const Padding(
-                        padding: EdgeInsets.only(top: 12.0, bottom: 12),
-                        child: CircularProgressIndicator(),
-                      )
-                    : const SizedBox(),
               ])
             : const Center(child: CircularProgressIndicator()),
       ),
