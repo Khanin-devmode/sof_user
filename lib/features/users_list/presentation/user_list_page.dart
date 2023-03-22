@@ -16,13 +16,15 @@ class UserListState extends ConsumerState<UserListPage> {
 
   @override
   void initState() {
-    ref.read(userListNotifierProvider.notifier).firstLoad();
+    ref.read(userListNotifierProvider.notifier).getUserByPage(1);
 
     userListScrollCtrl.addListener(() {
-      // print('scorlling');
+      int pageToLoad = ref.read(pageToLoadNumber);
+
       if (userListScrollCtrl.position.pixels ==
           userListScrollCtrl.position.maxScrollExtent) {
-        print('call api');
+        ref.read(userListNotifierProvider.notifier).getUserByPage(pageToLoad);
+        ref.read(pageToLoadNumber.notifier).update((state) => state + 1);
       } else {}
     });
 

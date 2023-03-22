@@ -3,10 +3,9 @@ import 'package:http/http.dart' as http;
 import 'package:sof_user/features/users_list/data/user_model.dart';
 
 class StackApiServices {
-  final int pageNumber = 1;
   final int pageSize = 100;
 
-  Future<List<UserModel>> getUsers() async {
+  Future<List<UserModel>> getUsers(int pageNumber) async {
     String endPoint =
         'https://api.stackexchange.com/2.3/users?page=$pageNumber&pagesize=$pageSize&order=desc&sort=reputation&site=stackoverflow';
 
