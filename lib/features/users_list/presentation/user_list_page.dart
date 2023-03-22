@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sof_user/features/users_list/data/services.dart';
 import 'package:sof_user/features/users_list/data/user_model.dart';
+import 'package:sof_user/features/users_list/domain/user_list_state.dart';
 
 class UserListPage extends ConsumerStatefulWidget {
   const UserListPage({super.key});
@@ -16,14 +16,14 @@ class UserListState extends ConsumerState<UserListPage> {
 
   @override
   void initState() {
+    ref.read(userListNotifierProvider.notifier).firstLoad();
+
     userListScrollCtrl.addListener(() {
       // print('scorlling');
       if (userListScrollCtrl.position.pixels ==
           userListScrollCtrl.position.maxScrollExtent) {
         print('call api');
-      } else {
-        print('just scrolling');
-      }
+      } else {}
     });
 
     super.initState();
@@ -31,48 +31,42 @@ class UserListState extends ConsumerState<UserListPage> {
 
   @override
   Widget build(BuildContext context) {
-    final userListData = ref.watch(userListProvider);
+    final userList = ref.watch(userListNotifierProvider);
 
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
         title: const Text('Stack Overflow User'),
       ),
-      body: userListData.when(
-          data: ((data) {
-            List<UserModel> userList =
-                userListData.value!.map((e) => e).toList();
-            print(userList.length);
-            return ListView.builder(
+      body: userList.isNotEmpty
+          ? ListView.builder(
               controller: userListScrollCtrl,
               itemCount: userList.length,
               itemBuilder: (context, index) {
+                UserModel user = userList[index];
                 return Card(
                   child: ListTile(
-                    leading: SizedBox(
-                      width: 48,
-                      height: 48,
-                      child: ClipOval(
-                        child: CachedNetworkImage(
-                          imageUrl: userList[index].imgUrl,
+                    leading: ClipOval(
+                      child: CachedNetworkImage(
+                        width: 48,
+                        height: 48,
+                        fadeInDuration: const Duration(milliseconds: 0),
+                        fadeOutDuration: const Duration(milliseconds: 0),
+                        imageUrl: user.imgUrl,
+                        placeholder: (context, url) => const Icon(
+                          Icons.face,
+                          size: 36,
                         ),
                       ),
                     ),
-                    title: Text(userList[index].displayName),
-                    subtitle: Text(userList[index].location),
-                    trailing: Text(
-                        'Reputation: ' + userList[index].reputation.toString()),
+                    title: Text(user.displayName),
+                    subtitle: Text(user.location),
+                    trailing: Text('Reputation: ${user.reputation.toString()}'),
                   ),
                 );
               },
-            );
-          }),
-          error: ((error, stackTrace) => Center(
-                child: Text(error.toString()),
-              )),
-          loading: () => const Center(
-                child: CircularProgressIndicator(),
-              )),
+            )
+          : const Center(child: CircularProgressIndicator()),
     );
   }
 }
