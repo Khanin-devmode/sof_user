@@ -1,12 +1,11 @@
 import 'dart:convert';
-
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
-import 'package:riverpod/riverpod.dart';
 import 'package:sof_user/features/users_list/data/user_model.dart';
 
 class StackApiServices {
-  final int pageNumber = 10;
-  final int pageSize = 30;
+  final int pageNumber = 1;
+  final int pageSize = 100;
 
   Future<List<UserModel>> getUsers() async {
     String endPoint =
