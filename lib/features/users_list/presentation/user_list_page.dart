@@ -13,18 +13,28 @@ class UserListPage extends ConsumerStatefulWidget {
 
 class UserListState extends ConsumerState<UserListPage> {
   ScrollController userListScrollCtrl = ScrollController();
+  bool isLoading = false;
 
   @override
   void initState() {
-    ref.read(userListNotifierProvider.notifier).getUserByPage(1);
+    ref.read(userListNotifierProvider.notifier).getUserByPage(1, () {});
 
     userListScrollCtrl.addListener(() {
       int pageToLoad = ref.read(pageToLoadNumber);
 
-      if (userListScrollCtrl.position.pixels ==
-          userListScrollCtrl.position.maxScrollExtent) {
-        ref.read(userListNotifierProvider.notifier).getUserByPage(pageToLoad);
-        ref.read(pageToLoadNumber.notifier).update((state) => state + 1);
+      if ((userListScrollCtrl.position.pixels ==
+              userListScrollCtrl.position.maxScrollExtent) &&
+          !isLoading) {
+        setState(() {
+          isLoading = true;
+        });
+        ref.read(userListNotifierProvider.notifier).getUserByPage(pageToLoad,
+            () {
+          ref.read(pageToLoadNumber.notifier).update((state) => state + 1);
+          setState(() {
+            isLoading = false;
+          });
+        });
       } else {}
     });
 
@@ -35,40 +45,53 @@ class UserListState extends ConsumerState<UserListPage> {
   Widget build(BuildContext context) {
     final userList = ref.watch(userListNotifierProvider);
 
-    return Scaffold(
-      backgroundColor: Colors.grey[200],
-      appBar: AppBar(
-        title: const Text('Stack Overflow User'),
-      ),
-      body: userList.isNotEmpty
-          ? ListView.builder(
-              controller: userListScrollCtrl,
-              itemCount: userList.length,
-              itemBuilder: (context, index) {
-                UserModel user = userList[index];
-                return Card(
-                  child: ListTile(
-                    leading: ClipOval(
-                      child: CachedNetworkImage(
-                        width: 48,
-                        height: 48,
-                        fadeInDuration: const Duration(milliseconds: 0),
-                        fadeOutDuration: const Duration(milliseconds: 0),
-                        imageUrl: user.imgUrl,
-                        placeholder: (context, url) => const Icon(
-                          Icons.face,
-                          size: 36,
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.grey[200],
+        appBar: AppBar(
+          title: const Text('Stack Overflow User'),
+        ),
+        body: userList.isNotEmpty
+            ? Column(children: [
+                Expanded(
+                  child: ListView.builder(
+                    controller: userListScrollCtrl,
+                    itemCount: userList.length,
+                    itemBuilder: (context, index) {
+                      UserModel user = userList[index];
+                      return Card(
+                        child: ListTile(
+                          leading: ClipOval(
+                            child: CachedNetworkImage(
+                              width: 48,
+                              height: 48,
+                              fadeInDuration: const Duration(milliseconds: 0),
+                              fadeOutDuration: const Duration(milliseconds: 0),
+                              imageUrl: user.imgUrl,
+                              placeholder: (context, url) => const Icon(
+                                Icons.face,
+                                size: 36,
+                              ),
+                            ),
+                          ),
+                          title: Text(user.displayName),
+                          subtitle: Text(user.location),
+                          trailing:
+                              Text('Reputation: ${user.reputation.toString()}'),
                         ),
-                      ),
-                    ),
-                    title: Text(user.displayName),
-                    subtitle: Text(user.location),
-                    trailing: Text('Reputation: ${user.reputation.toString()}'),
+                      );
+                    },
                   ),
-                );
-              },
-            )
-          : const Center(child: CircularProgressIndicator()),
+                ),
+                isLoading
+                    ? const Padding(
+                        padding: EdgeInsets.only(top: 12.0, bottom: 12),
+                        child: CircularProgressIndicator(),
+                      )
+                    : const SizedBox(),
+              ])
+            : const Center(child: CircularProgressIndicator()),
+      ),
     );
   }
 }

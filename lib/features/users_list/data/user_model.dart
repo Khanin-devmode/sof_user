@@ -34,6 +34,6 @@ class UserModel {
         badgeCountBronze: userJson["badge_counts"]["bronze"],
         badgeCountSilver: userJson["badge_counts"]["silver"],
         badgeCountGold: userJson["badge_counts"]["gold"],
-        location: userJson["location"] ?? "location not defined");
+        location: userJson["location"] ?? "");
   }
 }

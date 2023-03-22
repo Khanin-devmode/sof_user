@@ -9,9 +9,10 @@ class UserListNotifier extends StateNotifier<List<UserModel>> {
 
   var api = StackApiServices();
 
-  Future<void> getUserByPage(int nthPage) async {
-    List<UserModel> userList = await api.getUsers(nthPage);
+  Future<void> getUserByPage(int n, Function callBack) async {
+    List<UserModel> userList = await api.getUsers(n);
     state = state + userList;
+    callBack();
   }
 }
 
