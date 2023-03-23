@@ -142,14 +142,17 @@ class UserListWidget extends StatelessWidget {
                       builder: (context) => UserRepPage(user: user),
                     ),
                   ),
-                  leading: ClipOval(
-                    child: CachedNetworkImage(
-                      width: 48,
-                      height: 48,
-                      imageUrl: user.imgUrl,
-                      placeholder: (context, url) => const Icon(
-                        Icons.face,
-                        size: 36,
+                  leading: Hero(
+                    tag: user.userId,
+                    child: ClipOval(
+                      child: CachedNetworkImage(
+                        width: 48,
+                        height: 48,
+                        imageUrl: user.imgUrl,
+                        placeholder: (context, url) => const Icon(
+                          Icons.face,
+                          size: 36,
+                        ),
                       ),
                     ),
                   ),

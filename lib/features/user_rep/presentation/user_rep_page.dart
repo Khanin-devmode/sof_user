@@ -100,14 +100,17 @@ class UserRepColumnWidget extends StatelessWidget {
           return Column(
             children: [
               Center(
-                child: ClipOval(
-                  child: CachedNetworkImage(
-                    height: 160,
-                    width: 160,
-                    imageUrl: user.imgUrl,
-                    placeholder: (context, url) => const Icon(
-                      Icons.face,
-                      size: 36,
+                child: Hero(
+                  tag: user.userId,
+                  child: ClipOval(
+                    child: CachedNetworkImage(
+                      height: 160,
+                      width: 160,
+                      imageUrl: user.imgUrl,
+                      placeholder: (context, url) => const Icon(
+                        Icons.face,
+                        size: 36,
+                      ),
                     ),
                   ),
                 ),
