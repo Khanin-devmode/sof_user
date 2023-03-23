@@ -17,6 +17,8 @@ dependencies:
   cached_network_image: ^3.2.3
   sqflite: ^2.2.6
   dio: ^5.0.3
+  loader_overlay: ^2.1.0
+  intl: ^0.18.0
 
 dev_dependencies:
   flutter_test:
