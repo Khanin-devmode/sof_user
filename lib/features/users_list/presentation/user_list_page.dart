@@ -117,14 +117,16 @@ class UserListState extends ConsumerState<UserListPage> {
                           ),
                         );
                       } else {
-                        return isLoading
-                            ? const Center(
-                                child: Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: CircularProgressIndicator(),
-                                ),
-                              )
-                            : const SizedBox();
+                        return Container(
+                          height: 50,
+                          width: 50,
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(
+                            child: isLoading
+                                ? const CircularProgressIndicator()
+                                : const SizedBox(),
+                          ),
+                        );
                       }
                     },
                   ),
