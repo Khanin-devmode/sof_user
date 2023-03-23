@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:sof_user/features/users_list/data/user_model.dart';
 
-class StackApiServices {
+class UserListApiService {
   final int pageSize = 100;
 
   Future<List<UserModel>> getUsers(int pageNumber) async {

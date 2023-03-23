@@ -7,7 +7,7 @@ final pageToLoadNumber = StateProvider<int>((ref) => 2);
 class UserListNotifier extends StateNotifier<List<UserModel>> {
   UserListNotifier() : super([]);
 
-  var api = StackApiServices();
+  var api = UserListApiService();
 
   Future<void> getUserByPage(int n, Function callBack) async {
     List<UserModel> userList = await api.getUsers(n);
