@@ -166,7 +166,17 @@ class UserRepColumnWidget extends StatelessWidget {
         );
       case 'post_unupvoted':
         return const Icon(
+          Icons.remove,
+          color: Colors.green,
+        );
+      case 'post_downvoted':
+        return const Icon(
           Icons.arrow_downward,
+          color: Colors.red,
+        );
+      case 'post_undownvoted':
+        return const Icon(
+          Icons.remove,
           color: Colors.red,
         );
       case 'user_deleted':
@@ -187,7 +197,11 @@ class UserRepColumnWidget extends StatelessWidget {
       case 'post_upvoted':
         return 'Up voted';
       case 'post_unupvoted':
+        return 'Unup voted';
+      case 'post_downvoted':
         return 'Down voted';
+      case 'post_undownvoted':
+        return 'Undown voted';
       case 'user_deleted':
         return 'Deleted';
       case 'answer_accepted':
