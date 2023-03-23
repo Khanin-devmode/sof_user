@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sof_user/features/user_rep/data/user_rep_model.dart';
@@ -55,75 +56,84 @@ class UserRepState extends ConsumerState<UserRepPage> {
     final userRepHistory = ref.watch(userRepNotifierProvider);
 
     return Scaffold(
-      backgroundColor: Colors.grey[200],
-      appBar: AppBar(
-        title: const Text('Reputation History'),
-      ),
-      body: Column(
-        children: [
-          Text(user.userId.toString()),
-          Expanded(
-            child: userRepHistory.isNotEmpty
-                ? UserRepColumnWidget(
-                    userRepScrollCtrl: userRepScrollCtrl,
-                    userRepHistory: userRepHistory,
-                    ref: ref,
-                    isLoading: isLoading)
-                : const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-          ),
-        ],
-      ),
-    );
+        backgroundColor: Colors.grey[200],
+        appBar: AppBar(
+          title: const Text('Reputation History'),
+        ),
+        body: UserRepColumnWidget(
+            user: user,
+            userRepScrollCtrl: userRepScrollCtrl,
+            userRepHistory: userRepHistory,
+            ref: ref,
+            isLoading: isLoading));
   }
 }
 
 class UserRepColumnWidget extends StatelessWidget {
-  const UserRepColumnWidget({
-    super.key,
-    required this.userRepScrollCtrl,
-    required this.userRepHistory,
-    required this.ref,
-    required this.isLoading,
-  });
+  const UserRepColumnWidget(
+      {super.key,
+      required this.userRepScrollCtrl,
+      required this.userRepHistory,
+      required this.ref,
+      required this.isLoading,
+      required this.user});
 
   final ScrollController userRepScrollCtrl;
   final List<UserRep> userRepHistory;
   final WidgetRef ref;
   final bool isLoading;
+  final UserModel user;
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      Expanded(
-        child: ListView.builder(
-          padding: const EdgeInsets.all(6),
-          controller: userRepScrollCtrl,
-          itemCount: userRepHistory.length + 1,
-          itemBuilder: (context, index) {
-            if (index != userRepHistory.length) {
-              UserRep rep = userRepHistory[index];
-              return Card(
-                child: ListTile(
-                  title: Text(rep.repType),
+    return ListView.builder(
+      padding: const EdgeInsets.all(6),
+      controller: userRepScrollCtrl,
+      itemCount: userRepHistory.length + 1,
+      itemBuilder: (context, index) {
+        if (index == 0) {
+          return Column(
+            children: [
+              Center(
+                child: ClipOval(
+                  child: CachedNetworkImage(
+                    height: 160,
+                    width: 160,
+                    imageUrl: user.imgUrl,
+                    placeholder: (context, url) => const Icon(
+                      Icons.face,
+                      size: 36,
+                    ),
+                  ),
                 ),
-              );
-            } else {
-              return Container(
-                height: 50,
-                width: 50,
-                padding: const EdgeInsets.all(8.0),
-                child: Center(
-                  child: isLoading
-                      ? const CircularProgressIndicator()
-                      : const SizedBox(),
-                ),
-              );
-            }
-          },
-        ),
-      ),
-    ]);
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              if (userRepHistory.isEmpty) const CircularProgressIndicator()
+            ],
+          );
+        }
+        if (index != userRepHistory.length) {
+          UserRep rep = userRepHistory[index];
+          return Card(
+            child: ListTile(
+              title: Text(rep.repType),
+            ),
+          );
+        } else {
+          return Container(
+            height: 50,
+            width: 50,
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: isLoading
+                  ? const CircularProgressIndicator()
+                  : const SizedBox(),
+            ),
+          );
+        }
+      },
+    );
   }
 }
