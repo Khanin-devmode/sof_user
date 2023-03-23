@@ -1,9 +1,9 @@
 class UserRep {
-  final int repType;
+  final String repType;
   final int repChange;
   final int postId;
   final int userId;
-  final DateTime dateCreated;
+  final int dateCreated;
 
   UserRep({
     required this.userId,

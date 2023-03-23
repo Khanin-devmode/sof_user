@@ -5,7 +5,7 @@ import 'package:sof_user/features/user_rep/data/user_rep_model.dart';
 class UserRepApiService {
   final int pageSize = 100;
 
-  Future<List<UserRep>> getRep(int pageNumber, int userId) async {
+  Future<List<UserRep>> getRep(int userId, int pageNumber) async {
     String endPoint =
         'https://api.stackexchange.com//2.3/users/$userId/reputation-history?page=$pageNumber&pagesize=100&site=stackoverflow';
 

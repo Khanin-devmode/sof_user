@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sof_user/features/user_rep/presentation/user_rep_page.dart';
 import 'package:sof_user/features/users_list/data/user_model.dart';
 import 'package:sof_user/features/users_list/domain/user_bookmarked_state.dart';
 import 'package:sof_user/features/users_list/domain/user_list_state.dart';
@@ -75,28 +76,26 @@ class UserListState extends ConsumerState<UserListPage> {
             ),
     ];
 
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.grey[200],
-        appBar: AppBar(
-          title: const Text('Stack Overflow User'),
-        ),
-        body: userListView.elementAt(pageIndex),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.list),
-              label: 'List',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.bookmark_add_outlined),
-              label: 'Bookmark',
-            ),
-          ],
-          currentIndex: pageIndex,
-          selectedItemColor: Colors.amber[800],
-          onTap: _onItemTapped,
-        ),
+    return Scaffold(
+      backgroundColor: Colors.grey[200],
+      appBar: AppBar(
+        title: const Text('Stack Overflow User'),
+      ),
+      body: userListView.elementAt(pageIndex),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.list),
+            label: 'List',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.bookmark_add_outlined),
+            label: 'Bookmark',
+          ),
+        ],
+        currentIndex: pageIndex,
+        selectedItemColor: Colors.amber[800],
+        onTap: _onItemTapped,
       ),
     );
   }
@@ -137,6 +136,12 @@ class UserListWidget extends StatelessWidget {
               UserModel user = userList[index];
               return Card(
                 child: ListTile(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => UserRepPage(user: user),
+                    ),
+                  ),
                   leading: ClipOval(
                     child: CachedNetworkImage(
                       width: 48,
