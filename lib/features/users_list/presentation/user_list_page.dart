@@ -47,6 +47,7 @@ class UserListState extends ConsumerState<UserListPage> {
   Widget build(BuildContext context) {
     final userList = ref.watch(userListNotifierProvider);
     final bkmList = ref.watch(userBookmarkedNotifierProvider);
+    final bkmListId = bkmList.map((e) => e.userId);
 
     return SafeArea(
       child: Scaffold(
@@ -96,7 +97,7 @@ class UserListState extends ConsumerState<UserListPage> {
                                     indent: 8,
                                     thickness: 1,
                                   ),
-                                  bkmList.contains(user)
+                                  bkmListId.contains(user.userId)
                                       ? IconButton(
                                           icon: const Icon(Icons.bookmark),
                                           onPressed: () => ref

@@ -10,20 +10,21 @@ class UserBookmarkedNotifier extends StateNotifier<List<UserModel>> {
 
   void getUser() async {
     await bkmSqliteService.getUsers().then((users) {
-      print(users);
       state = users;
     });
   }
 
   void addUser(UserModel user) async {
-    await bkmSqliteService.insertUser(user);
-
-    state = [...state, user];
+    await bkmSqliteService.insertUser(user).then((value) {
+      state = [...state, user];
+    });
   }
 
   void removeUser(UserModel removingUser) async {
-    await bkmSqliteService.deleteUser(removingUser.userId);
-    state = state.where((user) => user != removingUser).toList();
+    await bkmSqliteService.removeUser(removingUser.userId).then((value) {
+      state =
+          state.where((user) => user.userId != removingUser.userId).toList();
+    });
   }
 }
 

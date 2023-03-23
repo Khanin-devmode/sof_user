@@ -8,17 +8,6 @@ class BkmSqliteService {
   Future<Database> initializeDb() async {
     String path = await getDatabasesPath();
 
-    //     final int userId;
-    // final int accId;
-    // final String displayName;
-    // final String imgUrl;
-    // final String link;
-    // final int reputation;
-    // final int badgeCountBronze;
-    // final int badgeCountSilver;
-    // final int badgeCountGold;
-    // final String location;
-    print('opening database');
     return openDatabase(
       join(path, 'bookmarked_users.db'),
       onCreate: (database, version) async {
@@ -37,7 +26,6 @@ class BkmSqliteService {
   }
 
   Future<List<UserModel>> getUsers() async {
-    print('getting user');
     final Database db = await initializeDb();
     final List<Map<String, dynamic>> maps = await db.query(tableKey);
 
@@ -56,7 +44,7 @@ class BkmSqliteService {
             location: maps[i]['location']));
   }
 
-  Future<void> deleteUser(int userId) async {
+  Future<void> removeUser(int userId) async {
     final db = await initializeDb();
 
     await db.delete(
