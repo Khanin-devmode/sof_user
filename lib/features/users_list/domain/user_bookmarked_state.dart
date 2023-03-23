@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sof_user/features/users_list/data/sqlite_service.dart';
 import 'package:sof_user/features/users_list/data/user_model.dart';
-import 'package:sqflite/sqflite.dart';
 
 class UserBookmarkedNotifier extends StateNotifier<List<UserModel>> {
   UserBookmarkedNotifier() : super([]);

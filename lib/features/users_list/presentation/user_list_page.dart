@@ -14,6 +14,7 @@ class UserListPage extends ConsumerStatefulWidget {
 
 class UserListState extends ConsumerState<UserListPage> {
   ScrollController userListScrollCtrl = ScrollController();
+  ScrollController bkmUserListScrollCtrl = ScrollController();
   bool isLoading = false;
 
   @override
@@ -43,11 +44,36 @@ class UserListState extends ConsumerState<UserListPage> {
     super.initState();
   }
 
+  int pageIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     final userList = ref.watch(userListNotifierProvider);
     final bkmList = ref.watch(userBookmarkedNotifierProvider);
     final bkmListId = bkmList.map((e) => e.userId);
+
+    List<Widget> userListView = <Widget>[
+      userList.isNotEmpty
+          ? UserListWidget(
+              userListScrollCtrl: userListScrollCtrl,
+              userList: userList,
+              bkmListId: bkmListId,
+              ref: ref,
+              isLoading: isLoading)
+          : const Center(
+              child: CircularProgressIndicator(),
+            ),
+      bkmList.isNotEmpty
+          ? UserListWidget(
+              userListScrollCtrl: bkmUserListScrollCtrl,
+              userList: bkmList,
+              bkmListId: bkmListId,
+              ref: ref,
+              isLoading: isLoading)
+          : const Center(
+              child: CircularProgressIndicator(),
+            ),
+    ];
 
     return SafeArea(
       child: Scaffold(
@@ -55,87 +81,122 @@ class UserListState extends ConsumerState<UserListPage> {
         appBar: AppBar(
           title: const Text('Stack Overflow User'),
         ),
-        body: userList.isNotEmpty
-            ? Column(children: [
-                Expanded(
-                  child: ListView.builder(
-                    padding: const EdgeInsets.all(6),
-                    controller: userListScrollCtrl,
-                    itemCount: userList.length + 1,
-                    itemBuilder: (context, index) {
-                      if (index != userList.length) {
-                        UserModel user = userList[index];
-                        return Card(
-                          child: ListTile(
-                            leading: ClipOval(
-                              child: CachedNetworkImage(
-                                width: 48,
-                                height: 48,
-                                // fadeInDuration: const Duration(milliseconds: 0),
-                                // fadeOutDuration:
-                                //     const Duration(milliseconds: 0),
-                                imageUrl: user.imgUrl,
-                                placeholder: (context, url) => const Icon(
-                                  Icons.face,
-                                  size: 36,
-                                ),
-                              ),
-                            ),
-                            title: Text(user.displayName),
-                            subtitle: Text(user.location),
-                            trailing: SizedBox(
-                              width: 140,
-                              child: Row(
-                                children: [
-                                  Column(
-                                    children: [
-                                      const Text('Reputation'),
-                                      Text(user.reputation.toString())
-                                    ],
-                                  ),
-                                  const VerticalDivider(
-                                    indent: 8,
-                                    thickness: 1,
-                                  ),
-                                  bkmListId.contains(user.userId)
-                                      ? IconButton(
-                                          icon: const Icon(Icons.bookmark),
-                                          onPressed: () => ref
-                                              .read(
-                                                  userBookmarkedNotifierProvider
-                                                      .notifier)
-                                              .removeUser(user))
-                                      : IconButton(
-                                          icon: const Icon(
-                                              Icons.bookmark_outline),
-                                          onPressed: () => ref
-                                              .read(
-                                                  userBookmarkedNotifierProvider
-                                                      .notifier)
-                                              .addUser(user))
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
-                      } else {
-                        return Container(
-                          height: 50,
-                          width: 50,
-                          padding: const EdgeInsets.all(8.0),
-                          child: Center(
-                            child: isLoading
-                                ? const CircularProgressIndicator()
-                                : const SizedBox(),
-                          ),
-                        );
-                      }
-                    },
-                  ),
-                ),
-              ])
-            : const Center(child: CircularProgressIndicator()),
+        body: userListView.elementAt(pageIndex),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.list),
+              label: 'List',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.bookmark_add_outlined),
+              label: 'Bookmark',
+            ),
+          ],
+          currentIndex: pageIndex,
+          selectedItemColor: Colors.amber[800],
+          onTap: _onItemTapped,
+        ),
       ),
     );
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      pageIndex = index;
+    });
+  }
+}
+
+class UserListWidget extends StatelessWidget {
+  const UserListWidget({
+    super.key,
+    required this.userListScrollCtrl,
+    required this.userList,
+    required this.bkmListId,
+    required this.ref,
+    required this.isLoading,
+  });
+
+  final ScrollController userListScrollCtrl;
+  final List<UserModel> userList;
+  final Iterable<int> bkmListId;
+  final WidgetRef ref;
+  final bool isLoading;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(children: [
+      Expanded(
+        child: ListView.builder(
+          padding: const EdgeInsets.all(6),
+          controller: userListScrollCtrl,
+          itemCount: userList.length + 1,
+          itemBuilder: (context, index) {
+            if (index != userList.length) {
+              UserModel user = userList[index];
+              return Card(
+                child: ListTile(
+                  leading: ClipOval(
+                    child: CachedNetworkImage(
+                      width: 48,
+                      height: 48,
+                      imageUrl: user.imgUrl,
+                      placeholder: (context, url) => const Icon(
+                        Icons.face,
+                        size: 36,
+                      ),
+                    ),
+                  ),
+                  title: Text(user.displayName),
+                  subtitle: Text(user.location),
+                  trailing: SizedBox(
+                    width: 140,
+                    child: Row(
+                      children: [
+                        Column(
+                          children: [
+                            const Text('Reputation'),
+                            Text(user.reputation.toString())
+                          ],
+                        ),
+                        const VerticalDivider(
+                          indent: 8,
+                          thickness: 1,
+                        ),
+                        bkmListId.contains(user.userId)
+                            ? IconButton(
+                                icon: const Icon(Icons.bookmark),
+                                onPressed: () => ref
+                                    .read(
+                                        userBookmarkedNotifierProvider.notifier)
+                                    .removeUser(user))
+                            : IconButton(
+                                icon: const Icon(Icons.bookmark_outline),
+                                onPressed: () => ref
+                                    .read(
+                                        userBookmarkedNotifierProvider.notifier)
+                                    .addUser(user))
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            } else {
+              return Container(
+                height: 50,
+                width: 50,
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                  child: isLoading
+                      ? const CircularProgressIndicator()
+                      : const SizedBox(),
+                ),
+              );
+            }
+          },
+        ),
+      ),
+    ]);
   }
 }
