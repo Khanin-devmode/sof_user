@@ -36,4 +36,19 @@ class UserModel {
         badgeCountGold: userJson["badge_counts"]["gold"],
         location: userJson["location"] ?? "");
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'userId': userId,
+      'accId': accId,
+      'displayName': displayName,
+      'imgUrl': imgUrl,
+      'link': link,
+      'reputation': reputation,
+      'badgeCountBronze': badgeCountBronze,
+      'badgeCountGold': badgeCountGold,
+      'badgeCountSilver': badgeCountSilver,
+      'location': location,
+    };
+  }
 }

@@ -18,6 +18,7 @@ class UserListState extends ConsumerState<UserListPage> {
 
   @override
   void initState() {
+    ref.read(userBookmarkedNotifierProvider.notifier).getUser();
     ref.read(userListNotifierProvider.notifier).getUserByPage(1, () {});
 
     userListScrollCtrl.addListener(() {
@@ -57,7 +58,7 @@ class UserListState extends ConsumerState<UserListPage> {
             ? Column(children: [
                 Expanded(
                   child: ListView.builder(
-                    padding: EdgeInsets.all(6),
+                    padding: const EdgeInsets.all(6),
                     controller: userListScrollCtrl,
                     itemCount: userList.length + 1,
                     itemBuilder: (context, index) {
@@ -69,9 +70,9 @@ class UserListState extends ConsumerState<UserListPage> {
                               child: CachedNetworkImage(
                                 width: 48,
                                 height: 48,
-                                fadeInDuration: const Duration(milliseconds: 0),
-                                fadeOutDuration:
-                                    const Duration(milliseconds: 0),
+                                // fadeInDuration: const Duration(milliseconds: 0),
+                                // fadeOutDuration:
+                                //     const Duration(milliseconds: 0),
                                 imageUrl: user.imgUrl,
                                 placeholder: (context, url) => const Icon(
                                   Icons.face,
@@ -87,7 +88,7 @@ class UserListState extends ConsumerState<UserListPage> {
                                 children: [
                                   Column(
                                     children: [
-                                      Text('Reputation'),
+                                      const Text('Reputation'),
                                       Text(user.reputation.toString())
                                     ],
                                   ),
