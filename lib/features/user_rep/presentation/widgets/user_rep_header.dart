@@ -1,3 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:sof_user/features/user_rep/data/user_rep_model.dart';
+import 'package:sof_user/features/users_list/data/user_model.dart';
+
 class UserRepHeader extends StatelessWidget {
   const UserRepHeader({
     super.key,

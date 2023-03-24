@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sof_user/features/user_rep/data/user_rep_model.dart';
 import 'package:sof_user/features/user_rep/data/user_rep_service.dart';

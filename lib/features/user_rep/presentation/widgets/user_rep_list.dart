@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sof_user/features/user_rep/data/user_rep_model.dart';
-import 'package:sof_user/features/user_rep/presentation/widgets/helper_functions.dart';
+import 'package:sof_user/features/user_rep/presentation/widgets/user_rep_card.dart';
 import 'package:sof_user/features/user_rep/presentation/widgets/user_rep_header.dart';
 import 'package:sof_user/features/users_list/data/user_model.dart';
 
@@ -32,22 +32,7 @@ class UserRepList extends StatelessWidget {
         }
         if (index != userRepHistory.length) {
           UserRep rep = userRepHistory[index];
-          return Column(
-            children: [
-              const Divider(
-                height: 0,
-              ),
-              ListTile(
-                dense: true,
-                horizontalTitleGap: 0,
-                leading: getVotedIcon(rep.repType),
-                tileColor: Colors.white,
-                title: Text(getVotedText(rep.repType)),
-                subtitle: Text(rep.repChange.toString()),
-                trailing: Text(getDateTime(rep.dateCreated)),
-              ),
-            ],
-          );
+          return UserRepCard(rep: rep);
         } else {
           return Container(
             height: 50,
@@ -64,3 +49,4 @@ class UserRepList extends StatelessWidget {
     );
   }
 }
+
