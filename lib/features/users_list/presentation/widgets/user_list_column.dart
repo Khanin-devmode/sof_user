@@ -29,7 +29,8 @@ class UserListView extends StatelessWidget {
       itemBuilder: (context, index) {
         if (index != userList.length) {
           UserModel user = userList[index];
-          return UserCard(user: user, bkmListId: bkmListId, ref: ref);
+          return UserCard(
+              user: user, bkmListId: bkmListId, ref: ref, index: index);
         } else {
           return Container(
             height: 50,
