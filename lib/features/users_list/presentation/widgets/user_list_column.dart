@@ -9,14 +9,14 @@ class UserListView extends StatelessWidget {
     super.key,
     required this.userListScrollCtrl,
     required this.userList,
-    required this.bkmList,
+    required this.bkmListId,
     required this.ref,
     required this.isLoading,
   });
 
   final ScrollController userListScrollCtrl;
   final List<UserModel> userList;
-  final List<UserModel> bkmList;
+  final Iterable<int> bkmListId;
   final WidgetRef ref;
   final bool isLoading;
 
@@ -29,7 +29,7 @@ class UserListView extends StatelessWidget {
       itemBuilder: (context, index) {
         if (index != userList.length) {
           UserModel user = userList[index];
-          return UserCard(user: user, bkmList: bkmList, ref: ref);
+          return UserCard(user: user, bkmListId: bkmListId, ref: ref);
         } else {
           return Container(
             height: 50,

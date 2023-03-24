@@ -48,13 +48,14 @@ class UserListState extends ConsumerState<UserListPage> {
   Widget build(BuildContext context) {
     final userList = ref.watch(userListNotifierProvider);
     final bkmList = ref.watch(userBookmarkedNotifierProvider);
+    final bkmListId = bkmList.map((e) => e.userId);
 
     List<Widget> userListView = <Widget>[
       userList.isNotEmpty
           ? UserListView(
               userListScrollCtrl: userListScrollCtrl,
               userList: userList,
-              bkmList: bkmList,
+              bkmListId: bkmListId,
               ref: ref,
               isLoading: isLoading)
           : const Center(
@@ -64,7 +65,7 @@ class UserListState extends ConsumerState<UserListPage> {
           ? UserListView(
               userListScrollCtrl: bkmUserListScrollCtrl,
               userList: bkmList,
-              bkmList: bkmList,
+              bkmListId: bkmListId,
               ref: ref,
               isLoading: isLoading)
           : const Center(

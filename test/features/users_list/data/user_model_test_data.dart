@@ -24,7 +24,7 @@ Map<String, dynamic> userOneJson = {
   "display_name": "mipadi"
 };
 
-UserModel userOneExpectedModel = UserModel(
+UserModel userOneExpectedModel = const UserModel(
     userId: 28804,
     accId: 14130,
     displayName: "mipadi",
@@ -61,7 +61,7 @@ Map<String, dynamic> userTwoJson = {
   "display_name": "jfs"
 };
 
-UserModel userTwoExpectedModel = UserModel(
+UserModel userTwoExpectedModel = const UserModel(
     userId: 4279,
     accId: 3021,
     displayName: "jfs",
@@ -72,4 +72,4 @@ UserModel userTwoExpectedModel = UserModel(
     badgeCountBronze: 1654,
     badgeCountSilver: 969,
     badgeCountGold: 189,
-    location: "San Francisco, CA");
+    location: "Moscow, Russia");

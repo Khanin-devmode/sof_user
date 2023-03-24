@@ -1,4 +1,6 @@
-class UserModel {
+import 'package:equatable/equatable.dart';
+
+class UserModel extends Equatable {
   final int userId;
   final int accId;
   final String displayName;
@@ -10,7 +12,7 @@ class UserModel {
   final int badgeCountGold;
   final String location;
 
-  UserModel(
+  const UserModel(
       {required this.userId,
       required this.accId,
       required this.displayName,
@@ -52,10 +54,16 @@ class UserModel {
   }
 
   @override
-  bool operator ==(Object other) {
-    return hashCode == other.hashCode;
-  }
-
-  @override
-  int get hashCode => userId.hashCode;
+  List<Object?> get props => [
+        userId,
+        accId,
+        displayName,
+        imgUrl,
+        link,
+        reputation,
+        badgeCountBronze,
+        badgeCountGold,
+        badgeCountSilver,
+        location
+      ];
 }
