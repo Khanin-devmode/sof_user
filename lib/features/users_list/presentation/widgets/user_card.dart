@@ -9,12 +9,12 @@ class UserCard extends StatelessWidget {
   const UserCard({
     super.key,
     required this.user,
-    required this.bkmListId,
+    required this.bkmList,
     required this.ref,
   });
 
   final UserModel user;
-  final Iterable<int> bkmListId;
+  final List<UserModel> bkmList;
   final WidgetRef ref;
 
   @override
@@ -57,18 +57,16 @@ class UserCard extends StatelessWidget {
                 indent: 8,
                 thickness: 1,
               ),
-              bkmListId.contains(user.userId)
+              bkmList.contains(user.userId)
                   ? IconButton(
                       icon: const Icon(Icons.bookmark),
                       onPressed: () => ref
-                          .read(
-                              userBookmarkedNotifierProvider.notifier)
+                          .read(userBookmarkedNotifierProvider.notifier)
                           .removeUser(user))
                   : IconButton(
                       icon: const Icon(Icons.bookmark_outline),
                       onPressed: () => ref
-                          .read(
-                              userBookmarkedNotifierProvider.notifier)
+                          .read(userBookmarkedNotifierProvider.notifier)
                           .addUser(user))
             ],
           ),

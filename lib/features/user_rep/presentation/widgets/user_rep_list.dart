@@ -5,8 +5,8 @@ import 'package:sof_user/features/user_rep/presentation/widgets/user_rep_card.da
 import 'package:sof_user/features/user_rep/presentation/widgets/user_rep_header.dart';
 import 'package:sof_user/features/users_list/data/user_model.dart';
 
-class UserRepList extends StatelessWidget {
-  const UserRepList(
+class RepListView extends StatelessWidget {
+  const RepListView(
       {super.key,
       required this.userRepScrollCtrl,
       required this.userRepHistory,
@@ -49,4 +49,3 @@ class UserRepList extends StatelessWidget {
     );
   }
 }
-

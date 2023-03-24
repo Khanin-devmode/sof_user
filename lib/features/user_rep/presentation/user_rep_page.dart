@@ -32,18 +32,24 @@ class UserRepState extends ConsumerState<UserRepPage> {
         int pageToLoad = ref.read(repPageToLoadNumber);
         var currentPosition = userRepScrollCtrl.position.pixels;
         var maxPosition = userRepScrollCtrl.position.maxScrollExtent;
+
         if ((currentPosition == maxPosition) && !isLoading) {
           setState(() => isLoading = true);
+
           ref
               .read(userRepNotifierProvider.notifier)
               .getUserRepHistory(
                 user.userId,
                 pageToLoad,
               )
-              .then((value) {
-            ref.read(repPageToLoadNumber.notifier).update((state) => state + 1);
-            setState(() => isLoading = false);
-          });
+              .then(
+            (value) {
+              ref
+                  .read(repPageToLoadNumber.notifier)
+                  .update((state) => state + 1);
+              setState(() => isLoading = false);
+            },
+          );
         }
       },
     );
@@ -61,7 +67,7 @@ class UserRepState extends ConsumerState<UserRepPage> {
           centerTitle: true,
           title: Text(user.displayName),
         ),
-        body: UserRepList(
+        body: RepListView(
             user: user,
             userRepScrollCtrl: userRepScrollCtrl,
             userRepHistory: userRepHistory,

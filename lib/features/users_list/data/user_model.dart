@@ -27,8 +27,7 @@ class UserModel {
         userId: userJson["user_id"],
         accId: userJson["account_id"],
         displayName: userJson["display_name"],
-        imgUrl:
-            userJson["profile_image"] ?? "//TODO: Some local uri image if null",
+        imgUrl: userJson["profile_image"] ?? "",
         link: userJson["link"] ?? "https://stackoverflow.com",
         reputation: userJson["reputation"],
         badgeCountBronze: userJson["badge_counts"]["bronze"],
@@ -51,4 +50,12 @@ class UserModel {
       'location': location,
     };
   }
+
+  @override
+  bool operator ==(Object other) {
+    return hashCode == other.hashCode;
+  }
+
+  @override
+  int get hashCode => userId.hashCode;
 }
