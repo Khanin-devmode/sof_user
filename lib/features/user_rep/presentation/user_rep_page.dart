@@ -1,11 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
-import 'package:sof_user/features/user_rep/data/user_rep_model.dart';
 import 'package:sof_user/features/user_rep/domain/user_rep_state.dart';
+import 'package:sof_user/features/user_rep/presentation/widgets/user_rep_list.dart';
 import 'package:sof_user/features/users_list/data/user_model.dart';
-import 'package:loader_overlay/loader_overlay.dart';
 
 class UserRepPage extends ConsumerStatefulWidget {
   const UserRepPage({super.key, required this.user});
@@ -28,7 +25,7 @@ class UserRepState extends ConsumerState<UserRepPage> {
   void initState() {
     ref
         .read(userRepNotifierProvider.notifier)
-        .getUserRepHistory(user.userId, 1, () {});
+        .getUserRepHistory(user.userId, 1);
 
     userRepScrollCtrl.addListener(
       () {
@@ -37,16 +34,16 @@ class UserRepState extends ConsumerState<UserRepPage> {
         var maxPosition = userRepScrollCtrl.position.maxScrollExtent;
         if ((currentPosition == maxPosition) && !isLoading) {
           setState(() => isLoading = true);
-          ref.read(userRepNotifierProvider.notifier).getUserRepHistory(
-            user.userId,
-            pageToLoad,
-            () {
-              ref
-                  .read(repPageToLoadNumber.notifier)
-                  .update((state) => state + 1);
-              setState(() => isLoading = false);
-            },
-          );
+          ref
+              .read(userRepNotifierProvider.notifier)
+              .getUserRepHistory(
+                user.userId,
+                pageToLoad,
+              )
+              .then((value) {
+            ref.read(repPageToLoadNumber.notifier).update((state) => state + 1);
+            setState(() => isLoading = false);
+          });
         }
       },
     );
@@ -58,164 +55,17 @@ class UserRepState extends ConsumerState<UserRepPage> {
   Widget build(BuildContext context) {
     final userRepHistory = ref.watch(userRepNotifierProvider);
 
-    return LoaderOverlay(
-      child: Scaffold(
-          backgroundColor: Colors.grey[200],
-          appBar: AppBar(
-            title: Text(user.displayName),
-          ),
-          body: UserRepColumnWidget(
-              user: user,
-              userRepScrollCtrl: userRepScrollCtrl,
-              userRepHistory: userRepHistory,
-              ref: ref,
-              isLoading: isLoading)),
-    );
-  }
-}
-
-class UserRepColumnWidget extends StatelessWidget {
-  const UserRepColumnWidget(
-      {super.key,
-      required this.userRepScrollCtrl,
-      required this.userRepHistory,
-      required this.ref,
-      required this.isLoading,
-      required this.user});
-
-  final ScrollController userRepScrollCtrl;
-  final List<UserRep> userRepHistory;
-  final WidgetRef ref;
-  final bool isLoading;
-  final UserModel user;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      padding: const EdgeInsets.all(6),
-      controller: userRepScrollCtrl,
-      itemCount: userRepHistory.length + 1,
-      itemBuilder: (context, index) {
-        if (index == 0) {
-          return Column(
-            children: [
-              Center(
-                child: Hero(
-                  tag: user.userId,
-                  child: ClipOval(
-                    child: CachedNetworkImage(
-                      height: 160,
-                      width: 160,
-                      imageUrl: user.imgUrl,
-                      placeholder: (context, url) => const Icon(
-                        Icons.face,
-                        size: 36,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Row(
-                children: const [
-                  Text('Repuation History'),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              if (userRepHistory.isEmpty) const CircularProgressIndicator()
-            ],
-          );
-        }
-        if (index != userRepHistory.length) {
-          UserRep rep = userRepHistory[index];
-          return ListTile(
-            dense: true,
-            horizontalTitleGap: 0,
-            leading: getVotedIcon(rep.repType),
-            tileColor: Colors.white,
-            title: Text(getVotedText(rep.repType)),
-            subtitle: Text('${rep.repChange.toString()}'),
-            trailing: Text(getDateTime(rep.dateCreated)),
-          );
-        } else {
-          return Container(
-            height: 50,
-            width: 50,
-            padding: const EdgeInsets.all(8.0),
-            child: Center(
-              child: isLoading
-                  ? const CircularProgressIndicator()
-                  : const SizedBox(),
-            ),
-          );
-        }
-      },
-    );
-  }
-
-  Icon getVotedIcon(String voteType) {
-    switch (voteType) {
-      case 'post_upvoted':
-        return const Icon(
-          Icons.arrow_upward,
-          color: Colors.green,
-        );
-      case 'post_unupvoted':
-        return const Icon(
-          Icons.remove,
-          color: Colors.green,
-        );
-      case 'post_downvoted':
-        return const Icon(
-          Icons.arrow_downward,
-          color: Colors.red,
-        );
-      case 'post_undownvoted':
-        return const Icon(
-          Icons.remove,
-          color: Colors.red,
-        );
-      case 'user_deleted':
-        return const Icon(Icons.close);
-      case 'answer_accepted':
-        return const Icon(
-          Icons.check,
-          color: Colors.green,
-        );
-
-      default:
-        return const Icon(Icons.remove);
-    }
-  }
-
-  String getVotedText(String voteType) {
-    switch (voteType) {
-      case 'post_upvoted':
-        return 'Up voted';
-      case 'post_unupvoted':
-        return 'Unup voted';
-      case 'post_downvoted':
-        return 'Down voted';
-      case 'post_undownvoted':
-        return 'Undown voted';
-      case 'user_deleted':
-        return 'Deleted';
-      case 'answer_accepted':
-        return 'Accepted';
-
-      default:
-        return 'Vote';
-    }
-  }
-
-  String getDateTime(int datetime) {
-    var votedTime =
-        DateTime.fromMillisecondsSinceEpoch(datetime * 1000).toLocal();
-
-    return DateFormat('MMM d, yyyy').format(votedTime).toString();
+    return Scaffold(
+        backgroundColor: Colors.grey[200],
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text(user.displayName),
+        ),
+        body: UserRepList(
+            user: user,
+            userRepScrollCtrl: userRepScrollCtrl,
+            userRepHistory: userRepHistory,
+            ref: ref,
+            isLoading: isLoading));
   }
 }

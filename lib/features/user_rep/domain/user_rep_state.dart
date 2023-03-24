@@ -5,6 +5,18 @@ import 'package:sof_user/features/user_rep/data/user_rep_service.dart';
 
 final repPageToLoadNumber = StateProvider.autoDispose<int>((ref) => 2);
 
+class UserRepHistoryNotifier extends StateNotifier<List<UserRep>> {
+  UserRepHistoryNotifier({required this.api}) : super([]);
+
+  UserRepApiService api;
+
+  Future<void> getUserRepHistory(int userId, int pageNumber) async {
+    await api.getRep(userId, pageNumber).then((value) {
+      state = state + value;
+    });
+  }
+}
+
 final userRepNotifierProvider =
     StateNotifierProvider.autoDispose<UserRepHistoryNotifier, List<UserRep>>(
         (ref) {
@@ -14,17 +26,3 @@ final userRepNotifierProvider =
 
   return UserRepHistoryNotifier(api: api);
 });
-
-class UserRepHistoryNotifier extends StateNotifier<List<UserRep>> {
-  UserRepHistoryNotifier({required this.api}) : super([]);
-
-  UserRepApiService api;
-
-  Future<void> getUserRepHistory(
-      int userId, int pageNumber, Function callBack) async {
-    await api.getRep(userId, pageNumber).then((value) {
-      state = state + value;
-      callBack();
-    });
-  }
-}
