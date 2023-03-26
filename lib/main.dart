@@ -13,10 +13,10 @@ class SofUserApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Stack Overflow User',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        fontFamily: 'Poppins',
+        primarySwatch: Colors.amber,
       ),
       home: const UserListPage(),
     );
