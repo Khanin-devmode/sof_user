@@ -77,7 +77,7 @@ class UserListState extends ConsumerState<UserListPage> {
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Stack Overflow User'),
+        title: const Text('StackRep'),
       ),
       body: userListView.elementAt(pageIndex),
       bottomNavigationBar: BottomNavigationBar(

@@ -16,7 +16,7 @@ class SofUserApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'Poppins',
-        primarySwatch: Colors.amber,
+        primarySwatch: Colors.deepOrange,
       ),
       home: const UserListPage(),
     );

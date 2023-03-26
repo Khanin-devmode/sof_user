@@ -90,7 +90,6 @@ class UserCard extends StatelessWidget {
                 ],
               ),
               const VerticalDivider(
-                indent: 8,
                 thickness: 1,
               ),
               bkmListId.contains(user.userId)

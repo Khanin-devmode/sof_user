@@ -17,6 +17,7 @@ class UserRepHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        const SizedBox(height: 12),
         Center(
           child: Hero(
             tag: user.userId,
@@ -38,7 +39,13 @@ class UserRepHeader extends StatelessWidget {
         ),
         Row(
           children: const [
-            Text('Repuation History'),
+            Padding(
+              padding: EdgeInsets.only(left: 8.0),
+              child: Text(
+                'Repuation History',
+                style: TextStyle(fontSize: 16),
+              ),
+            ),
           ],
         ),
         const SizedBox(
