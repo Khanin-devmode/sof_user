@@ -1,17 +1,23 @@
-# sof_user
+# StackRep (sof_user) 
 
-A new Flutter project.
+iOs/Android application to list stack overflow user by their reputation.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+When running on an actual device please run with:
+flutter run --release
 
-A few resources to get you started if this is your first Flutter project:
+--release mode will ensure the app runs smoothly with actual mobile device resources.
+As --debug mode will require more resources and overload the device for debugging purposes.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Key Feature
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# sof_user
+- Display list of stackoverflow user by their reputation.
+- Infinite scroll to see all user.
+- Bookmark user for quick access.
+- Display only bookmarked users.
+- Persistent display bookmared user after restart the app.
+- See detail of each user.
+- Display list of repuation history.
+- Infinite scroll to see all reputation history.
+
