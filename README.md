@@ -1,6 +1,6 @@
 # StackRep (sof_user) 
 
-iOs/Android application to list stack overflow user by their reputation.
+iOS/Android application to list stack overflow user by their reputation.
 
 ## Getting Started
 
