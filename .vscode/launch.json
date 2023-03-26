@@ -1,0 +1,56 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "sof_user",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "sof_user (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "sof_user (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "iPhone 14 Pro Max Emulator",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "219457B3-D3F1-4285-8AC6-61E64DAAF132"
+        },
+        {
+            "name": "iPhone 14",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "2A7BDA31-3099-4123-9C84-CB48538B40BA"
+        },
+        {
+            "name": "Pixel 6A Emulator",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "emulator-5554"
+        },
+        {
+            "name": "Huawei Mate 20X (physical)",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "BEV5T18B05001977"
+        }
+    ],
+    "compounds": [
+        {
+          "name": "All Mobile",
+          "configurations": ["iPhone 14", "Huawei Mate 20X (physical)"]
+        }
+      ]
+    
+}

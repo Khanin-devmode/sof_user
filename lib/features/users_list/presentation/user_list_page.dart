@@ -69,7 +69,7 @@ class UserListState extends ConsumerState<UserListPage> {
               ref: ref,
               isLoading: isLoading)
           : const Center(
-              child: CircularProgressIndicator(),
+              child: Text("Tap 'bookmark' icon to bookmark"),
             ),
     ];
 

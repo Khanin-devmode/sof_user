@@ -62,7 +62,7 @@ void main() {
           );
           await tester.pumpAndSettle();
 
-          expect(find.byKey(Key('user_card_100')), findsOneWidget);
+          expect(find.byKey(const Key('user_card_100')), findsOneWidget);
         },
       );
     },
