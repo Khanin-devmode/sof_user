@@ -68,8 +68,15 @@ class UserListState extends ConsumerState<UserListPage> {
               bkmListId: bkmListId,
               ref: ref,
               isLoading: isLoading)
-          : const Center(
-              child: Text("Tap 'bookmark' icon to bookmark"),
+          : Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text("Tap "),
+                  Icon(Icons.bookmark_outline),
+                  Text(" icon to bookmark.")
+                ],
+              ),
             ),
     ];
 
@@ -92,7 +99,7 @@ class UserListState extends ConsumerState<UserListPage> {
           ),
         ],
         currentIndex: pageIndex,
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: Colors.deepOrange,
         onTap: _onItemTapped,
       ),
     );

@@ -33,6 +33,13 @@ class UserCard extends StatelessWidget {
           ),
         ),
         leading: Hero(
+          flightShuttleBuilder: (flightContext, animation, flightDirection,
+              fromHeroContext, toHeroContext) {
+            return RotationTransition(
+              turns: animation,
+              child: toHeroContext.widget,
+            );
+          },
           tag: user.userId,
           child: ClipOval(
             child: CachedNetworkImage(
