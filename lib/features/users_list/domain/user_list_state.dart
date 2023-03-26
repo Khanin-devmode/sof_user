@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sof_user/features/users_list/data/services.dart';
+import 'package:sof_user/features/users_list/data/user_list_service.dart';
 import 'package:sof_user/features/users_list/data/user_model.dart';
 
 final pageToLoadNumber = StateProvider<int>((ref) => 2);
