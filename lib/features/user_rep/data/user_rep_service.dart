@@ -9,7 +9,7 @@ class UserRepApiService {
   Future<List<UserRep>> getRep(int userId, int pageNumber) async {
     final dio = Dio();
     String endPoint =
-        'https://api.stackexchange.com//2.3/users/$userId/reputation-history?page=$pageNumber&pagesize=100&site=stackoverflow';
+        'https://api.stackexchange.com//2.3/users/$userId/reputation-history?page=$pageNumber&pagesize=100&site=stackoverflow&key=QWPxw89168Pe)Y9rTPIZlA((';
 
     final response = await dio.get(endPoint, cancelToken: cancelToken);
 
