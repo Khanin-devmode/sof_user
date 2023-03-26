@@ -21,14 +21,18 @@ class UserRepHeader extends StatelessWidget {
         Center(
           child: Hero(
             tag: user.userId,
-            child: ClipOval(
-              child: CachedNetworkImage(
-                height: 160,
-                width: 160,
-                imageUrl: user.imgUrl,
-                placeholder: (context, url) => const Icon(
-                  Icons.face,
-                  size: 36,
+            child: Material(
+              shape: const CircleBorder(),
+              elevation: 6,
+              child: ClipOval(
+                child: CachedNetworkImage(
+                  height: 160,
+                  width: 160,
+                  imageUrl: user.imgUrl,
+                  placeholder: (context, url) => const Icon(
+                    Icons.face,
+                    size: 36,
+                  ),
                 ),
               ),
             ),
@@ -38,9 +42,26 @@ class UserRepHeader extends StatelessWidget {
           height: 20,
         ),
         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            BadgeFullDisplay(
+              iconColor: Colors.amberAccent,
+              label: 'Gold: ${user.badgeCountGold}',
+            ),
+            BadgeFullDisplay(
+              iconColor: Colors.grey.shade300,
+              label: 'Silver: ${user.badgeCountSilver}',
+            ),
+            BadgeFullDisplay(
+              iconColor: Colors.brown.shade400,
+              label: 'Bronze: ${user.badgeCountBronze}',
+            ),
+          ],
+        ),
+        Row(
           children: const [
             Padding(
-              padding: EdgeInsets.only(left: 8.0),
+              padding: EdgeInsets.only(left: 16.0, top: 16),
               child: Text(
                 'Repuation History',
                 style: TextStyle(fontSize: 16),
@@ -53,6 +74,36 @@ class UserRepHeader extends StatelessWidget {
         ),
         if (userRepHistory.isEmpty) const CircularProgressIndicator()
       ],
+    );
+  }
+}
+
+class BadgeFullDisplay extends StatelessWidget {
+  const BadgeFullDisplay(
+      {super.key, required this.iconColor, required this.label});
+
+  final String label;
+  final Color iconColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.grey[200],
+        borderRadius: BorderRadius.circular(8),
+      ),
+      padding: const EdgeInsets.all(4),
+      child: Row(
+        children: [
+          Icon(
+            Icons.circle,
+            color: iconColor,
+            size: 16,
+          ),
+          const SizedBox(width: 4),
+          Text(label),
+        ],
+      ),
     );
   }
 }

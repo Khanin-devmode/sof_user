@@ -23,12 +23,24 @@ class RepListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      padding: const EdgeInsets.all(6),
+      // padding: const EdgeInsets.all(6),
       controller: userRepScrollCtrl,
       itemCount: userRepHistory.length + 1,
       itemBuilder: (context, index) {
         if (index == 0) {
-          return UserRepHeader(user: user, userRepHistory: userRepHistory);
+          return Stack(
+            children: [
+              ClipPath(
+                clipper: BezierClipper(),
+                child: Container(
+                  color: Colors.deepOrange,
+                  width: double.infinity,
+                  height: 150,
+                ),
+              ),
+              UserRepHeader(user: user, userRepHistory: userRepHistory),
+            ],
+          );
         }
         if (index != userRepHistory.length) {
           UserRep rep = userRepHistory[index];
@@ -47,5 +59,25 @@ class RepListView extends StatelessWidget {
         }
       },
     );
+  }
+}
+
+class BezierClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    Path path = Path();
+
+    path.lineTo(0, size.height * 0.75);
+    path.quadraticBezierTo(size.width * 0.25, size.height * 0.5,
+        size.width * 0.5, size.height * 0.75);
+    path.quadraticBezierTo(
+        size.width * 0.75, size.height * 1, size.width, size.height * 0.75);
+    path.lineTo(size.width, 0);
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    return true;
   }
 }

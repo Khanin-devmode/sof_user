@@ -62,8 +62,9 @@ class UserRepState extends ConsumerState<UserRepPage> {
     final userRepHistory = ref.watch(userRepNotifierProvider);
 
     return Scaffold(
-        backgroundColor: Colors.grey[200],
+        backgroundColor: Colors.white,
         appBar: AppBar(
+          elevation: 0,
           centerTitle: true,
           title: Text(user.displayName),
         ),
