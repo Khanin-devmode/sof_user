@@ -27,7 +27,7 @@ void main() {
       );
 
       testWidgets(
-        'Tap bookmark, expected bookmarked icon and vice versa',
+        'Without any bookmarked user, tap bookmark, expected bookmarked icon and vice versa.',
         (tester) async {
           app.main();
           await tester.pumpAndSettle();
