@@ -6,7 +6,7 @@ import 'package:sof_user/main.dart' as app;
 
 void main() {
   group(
-    'Simple Business Logic App Testing',
+    'Simple Business Logic App Testing:',
     () {
       testWidgets(
         'Expect initial list load and navigate to detail and expect rep history load',
@@ -17,7 +17,7 @@ void main() {
 
           expect(find.byType(UserCard), findsWidgets);
 
-          final userCard = find.byType(UserCard).last;
+          final userCard = find.byType(UserCard).first;
 
           await tester.tap(userCard);
           await tester.pumpAndSettle();
@@ -54,10 +54,10 @@ void main() {
           await tester.pumpAndSettle();
 
           final list = find.byType(Scrollable);
-          final loadingWidget = find.byType(CircularProgressIndicator);
           await tester.scrollUntilVisible(
-            loadingWidget,
-            5000.0,
+            // loadingWidget,
+            find.byKey(const Key('user_card_99')),
+            300,
             scrollable: list,
           );
           await tester.pumpAndSettle();
