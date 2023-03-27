@@ -33,4 +33,4 @@ As --debug mode will require more resources and overload the device for debuggin
 - Create launcher icons with flutter_launcher_icon package.
 - Create spalsh screen with flutter_native_splash package.
 - Unit test for simple model class.
-- Integration/e2e testing for simple business logic.
+- Integration/e2e testing, 3 cases for simple business logic. 
