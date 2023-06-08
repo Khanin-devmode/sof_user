@@ -68,10 +68,10 @@ class UserListState extends ConsumerState<UserListPage> {
               bkmListId: bkmListId,
               ref: ref,
               isLoading: isLoading)
-          : Center(
+          : const Center(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
+                children: [
                   Text("Tap "),
                   Icon(Icons.bookmark_outline),
                   Text(" icon to bookmark.")

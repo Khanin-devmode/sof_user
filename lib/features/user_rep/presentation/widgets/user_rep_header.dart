@@ -58,8 +58,8 @@ class UserRepHeader extends StatelessWidget {
             ),
           ],
         ),
-        Row(
-          children: const [
+        const Row(
+          children: [
             Padding(
               padding: EdgeInsets.only(left: 16.0, top: 16),
               child: Text(
